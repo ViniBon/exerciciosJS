@@ -1,3 +1,7 @@
+/* Ao invés de executar este exércicio em partes optei por fazer integral
+ */
+
+
 let entrada;
 let user1 = {};
 
