@@ -45,21 +45,14 @@ function cadastro(user){
 
         while(user.nomeCompleto == ""){
             input = prompt("Digite seu nome completo.");
-                let verificaNomeCompleto = input.split(" ");
+            let verificaNomeCompleto = input.split(" ");
+            
                 if (verificaNomeCompleto.length == 1) {
                     alert("O nome precisa ser completo!");
                 }else if(verificaNomeCompleto.length > 1){
                     verificaNomeCompleto.forEach((texto,index) => {
-
-                        maiuscula = texto[0].toUpperCase();
-                        resto = texto.substring(1).toLowerCase();
-                        completo = maiuscula+resto;
-
-                        if (index == 0) {
-                            user.nomeCompleto += `${completo}`;
-                        }else{
-                            user.nomeCompleto += ` ${completo}`;
-                        }
+                        completo = texto[0].toUpperCase()+texto.substring(1).toLowerCase();
+                        index == 0 ?user.nomeCompleto += `${completo}`:user.nomeCompleto += ` ${completo}`
                     });
                 }
         }
@@ -95,7 +88,6 @@ function cadastro(user){
         while(user.cpf == ""){
             input = prompt(`${nome}, digite seu CPF.`);
             verificaCpf = Number(input);
-            console.log(verificaCpf.length);
 
             if (isNaN(verificaCpf) ) {
                 alert("Digite apenas numeros, e sem espaços, por favor!");
@@ -105,10 +97,7 @@ function cadastro(user){
                 trataCpf = String(verificaCpf).split("");
 
                     trataCpf.forEach((numero,index) => {
-                        if (index == 2) {
-                            numero += ".";
-                            itemCpf = numero;
-                        }else if (index == 5){
+                        if (index == 2 || index == 5) {
                             numero += ".";
                             itemCpf = numero;
                         }else if (index == 8){
