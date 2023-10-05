@@ -21,7 +21,7 @@ Com todos os dados recolhidos, crie um objeto chamado cliente para armazenar os 
 let cliente1 = {
     nomeCompleto:"", //certo
     cpf:"", //certo
-    idade:"",
+    idade:"", //certo
     email:"", //certo
     celular:"", //certo
     telefone:"", //certo
@@ -45,13 +45,13 @@ function cadastro(user){
 
         while(user.nomeCompleto == ""){
             input = prompt("Digite seu nome completo.");
-            let verificaNomeCompleto = input.split(" ");
+            const verificaNomeCompleto = input.split(" ");
             
                 if (verificaNomeCompleto.length == 1) {
                     alert("O nome precisa ser completo!");
                 }else if(verificaNomeCompleto.length > 1){
                     verificaNomeCompleto.forEach((texto,index) => {
-                        completo = texto[0].toUpperCase()+texto.substring(1).toLowerCase();
+                        const completo = texto[0].toUpperCase()+texto.substring(1).toLowerCase();
                         index == 0 ?user.nomeCompleto += `${completo}`:user.nomeCompleto += ` ${completo}`
                     });
                 }
@@ -87,14 +87,14 @@ function cadastro(user){
 
         while(user.cpf == ""){
             input = prompt(`${nome}, digite seu CPF.`);
-            verificaCpf = Number(input);
+            const verificaCpf = Number(input);
 
             if (isNaN(verificaCpf) ) {
                 alert("Digite apenas numeros, e sem espaços, por favor!");
             }else if ( String(verificaCpf).length < 11 || String(verificaCpf).length > 11){
                 alert("CPF inválido, por favor digite novamente!");
             }else if (String(verificaCpf).length == 11){
-                trataCpf = String(verificaCpf).split("");
+                const trataCpf = String(verificaCpf).split("");
 
                     trataCpf.forEach((numero,index) => {
                         if (index == 2 || index == 5) {
@@ -117,7 +117,7 @@ function cadastro(user){
 
         while(user.email == ""){
             input = prompt(`${nome}, digite seu email.`);
-            verificaEmail = input;
+            const verificaEmail = input;
 
             verificaEmail.indexOf("@") == -1 ? alert("Seu email precisa conter um @!") : user.email = verificaEmail;
         }
@@ -130,14 +130,14 @@ function cadastro(user){
 
         while(user.celular == ""){
             input = prompt(`${nome}, digite seu número de celular com o DDD ( OBRIGATÓRIO ) .`);
-            verificaCelular = Number(input);
+            const verificaCelular = Number(input);
 
             if (isNaN(verificaCelular) ) {
                 alert("Digite apenas numeros, por favor!");
             }else if ( String(verificaCelular).length < 11 || String(verificaCelular).length > 11){
                 alert("Número inválido, por favor digite novamente!");
             }else if (String(verificaCelular).length == 11){
-                trataCelular = String(verificaCelular).split("");
+                const trataCelular = String(verificaCelular).split("");
 
                     trataCelular.forEach((numero,index) => {
                         if (index == 0) {
@@ -159,14 +159,14 @@ function cadastro(user){
                                 user.telefone = "Não informado";
                                 break;
                             }
-                            verificaTelefone = Number(input);
+                            const verificaTelefone = Number(input);
 
                             if (isNaN(verificaTelefone) ) {
                                 alert("Digite apenas numeros, por favor!");
                             }else if ( String(verificaTelefone).length < 10 || String(verificaTelefone).length > 10){
                                 alert("Número inválido, por favor digite novamente!");
                             }else if (String(verificaTelefone).length == 10){
-                                trataTelefone = String(verificaTelefone).split("");
+                                const trataTelefone = String(verificaTelefone).split("");
 
                                 trataTelefone.forEach((numero,index) => {
                                 if (index == 0) {
@@ -192,18 +192,32 @@ function cadastro(user){
         Opção 2: Ops! Você ainda não tem a idade mínima para abrir uma conta conosco. Daqui X anos você poderá tentar novamente! */
 
         while(user.idade == 0){
-            input = prompt(`${nome}, digite sua idade.`);
-            let verificaIdade = Number(input);
+            input = prompt(`${nome}, Qual a sua data de nascimento? Siga esse padrão: DD/MM/AAAA.`);
 
-            if (isNaN(verificaIdade)) {
-                alert("Digite apenas números, por favor!");
-            }else if(verificaIdade < 18){
-                periodo = 18 - verificaIdade;
-                textoPeriodo = periodo > 1 ? "anos" : "ano";
-                alert(`Você ainda não tem idade mínima para abrir um conta em nossa rede, daqui ${periodo} ${textoPeriodo} você podera efetuar seu cadastro.`);
-                break;
+            if (input.indexOf("/") == -1 || input == "" || input.length < 10 || input.length > 10) {
+                alert("Digite uma data válida, por favor!");
+            }else{
+                const verificaIdade = input.split("/");
+                const diaNasc = parseInt(verificaIdade[0]);
+                const mesNasc = parseInt(verificaIdade[1]);
+                const anoNasc = parseInt(verificaIdade[2]);
+
+                const dataNasc = new Date(anoNasc, mesNasc - 1, diaNasc);
+                const dataAtual = new Date();
+
+                const idadeEmMiliSeg = dataAtual - dataNasc;
+
+                const idadeEmAnos = Math.floor(idadeEmMiliSeg / (1000*60*60*24*365.2425));
+
+                if(idadeEmAnos < 18){
+                    const periodo = 18 - idadeEmAnos;
+                    const textoPeriodo = periodo > 1 ? "anos" : "ano";
+                    alert(`Você ainda não tem idade mínima para abrir um conta em nossa rede, daqui ${periodo} ${textoPeriodo} você podera efetuar seu cadastro.`);
+                    break;
+                }else{ 
+                    user.idade = idadeEmAnos;
+                }
             }
-            user.idade = verificaIdade;
         }
         
         /* 
@@ -213,7 +227,7 @@ function cadastro(user){
         
         while(user.senha == ""){
             input = prompt(`${nome}, digite uma senha númerica de 4 digitos diferentes.`);
-            let verificaSenha = input.split("").map((num)=>{
+            const verificaSenha = input.split("").map((num)=>{
                 return Number(num);
             });
             let senha = [];
